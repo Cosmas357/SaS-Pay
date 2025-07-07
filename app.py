@@ -282,6 +282,6 @@ if __name__ == '__main__':
         print("Creating database tables...")
         print("Current working directory:", os.getcwd())
         db.create_all()  # This will create the SQLite db file and tables if not exist
-    app.run(debug=True)
+    # app.run(debug=True)
 
 
