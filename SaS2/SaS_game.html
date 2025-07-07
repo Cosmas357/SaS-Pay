@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SaS PAY Finance Game</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #e0f7ff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #007acc;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+      .logo {
+      width: 80px;
+      height: auto;
+      display: block;
+      margin: 0 auto 1rem;
+      border-radius: 50%;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .game-box {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      padding: 30px;
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+      position: relative;
+    }
+
+    .question {
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+    }
+
+    .options button {
+      display: block;
+      margin: 10px auto;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #007acc;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .options button:hover {
+      background-color: #005b99;
+    }
+
+    .level-display, .ranking-display {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #007acc;
+    }
+
+    .ranking-display {
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+
+    .timer {
+      font-size: 1.2rem;
+      color: #e91e63;
+      position: absolute;
+      top: 10px;
+      right: 20px;
+    }
+
+    footer {
+      background-color: #007acc;
+      color: white;
+      padding: 30px 20px;
+      font-size: 0.9rem;
+      margin-top: auto;
+    }
+
+    .footer-top {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .footer-section {
+      flex: 1;
+      min-width: 250px;
+      margin: 10px;
+    }
+
+    .footer-section h3 {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-section li {
+      margin-bottom: 5px;
+    }
+
+    .footer-section i {
+      margin-right: 8px;
+    }
+
+    .social-icons {
+      text-align: center;
+    }
+
+    .social-icons a {
+      color: white;
+      margin: 0 10px;
+      text-decoration: none;
+      font-size: 1.4rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+      <center> <img src="./SaS_images/1747563485546.png" alt="SaS Logo" class="logo" /></center>
+    SaS PAY Finance Game – Learn to Save, Earn, and Grow!
+  </header>
+
+  <main>
+    <div class="game-box">
+      <div id="timer" class="timer"></div>
+      <div id="question" class="question">Loading question...</div>
+      <div class="options" id="options"></div>
+      <div class="level-display" id="level">Level: 1</div>
+      <div class="ranking-display" id="ranking"></div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-top">
+      <div class="footer-section">
+        <h3><i class="fas fa-bullseye"></i> Objectives</h3>
+        <ul>
+          <li><i class="fas fa-check-circle"></i> Teach financial literacy through gaming</li>
+          <li><i class="fas fa-lightbulb"></i> Encourage wise spending and saving habits</li>
+          <li><i class="fas fa-chart-line"></i> Engage users with interactive learning</li>
+        </ul>
+      </div>
+      <div class="footer-section" style="text-align: right;">
+        <h3><i class="fas fa-flag"></i> SaS PAY Project</h3>
+        <p><i class="fas fa-bullseye"></i> Empowering financial independence with smart, fun tools.</p>
+      </div>
+    </div>
+    <div class="social-icons">
+      <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+      <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+      <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+    </div>
+  </footer>
+
+  <script>
+    const sampleQuestions = [
+      "What is a budget used for?",
+      "Why is saving important?",
+      "What does investing help you do?",
+      "How can you avoid impulse spending?",
+      "What is a good reason to use a loan?",
+      "How does a savings account help?",
+      "Why track your expenses?",
+      "What is compound interest?",
+      "What are emergency funds for?",
+      "What is the 50/30/20 rule?",
+    
+    ];
+
+    const sampleAnswers = [
+      ["To track income and expenses", 0],
+      ["To build future security", 0],
+      ["Grow your wealth", 0],
+      ["Make a list and plan ahead", 0],
+      ["For emergencies or big needs", 0],
+      ["To keep money safe and earn interest", 0],
+      ["To know where money goes", 0],
+      ["Interest earned on previous interest", 0],
+      ["To cover unexpected expenses", 0],
+      ["Spending 50% needs, 30% wants, 20% savings", 0]
+   
+    ];
+
+    let allQuestions = sampleQuestions.map((q, i) => ({
+      question: q,
+      options: [sampleAnswers[i][0], "Ignore it", "Spend randomly"],
+      answer: 0,
+      level: i + 1
+    }));
+
+    const shuffledQuestions = allQuestions.sort(() => Math.random() - 0.5);
+    let usedIndices = new Set();
+    let username = prompt("Enter your username:");
+    let currentIndex = 0;
+    let timerInterval;
+    const leaderboard = JSON.parse(localStorage.getItem("leaderboard") || "[]");
+
+    function showQuestion() {
+      if (currentIndex >= shuffledQuestions.length) {
+        finishGame();
+        return;
+      }
+      const q = shuffledQuestions[currentIndex];
+      clearInterval(timerInterval);
+      document.getElementById("question").textContent = q.question;
+      document.getElementById("options").innerHTML = "";
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(i);
+        document.getElementById("options").appendChild(btn);
+      });
+      document.getElementById("level").textContent = `Level: ${q.level}`;
+      startTimer();
+    }
+
+    function startTimer() {
+      let timeLeft = 59;
+      const timerDisplay = document.getElementById("timer");
+      timerDisplay.textContent = `⏰ ${timeLeft}s`;
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = `⏰ ${timeLeft}s`;
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          skipQuestion();
+        }
+      }, 1000);
+    }
+
+    function skipQuestion() {
+      alert("⏳ Time's up! Moving to the next question.");
+      currentIndex++;
+      showQuestion();
+    }
+
+    function checkAnswer(choice) {
+      const correct = shuffledQuestions[currentIndex].answer;
+      clearInterval(timerInterval);
+      if (choice === correct) {
+        currentIndex++;
+        showQuestion();
+      } else {
+        alert("❌ Try again! Choose the best answer.");
+        showQuestion();
+      }
+    }
+
+    function finishGame() {
+      leaderboard.push({ username, score: shuffledQuestions.length });
+      leaderboard.sort((a, b) => b.score - a.score);
+      localStorage.setItem("leaderboard", JSON.stringify(leaderboard.slice(0, 10)));
+      displayRanking();
+      alert("🎉 You completed all questions! Great job saving!");
+    }
+
+    function displayRanking() {
+      const rankDiv = document.getElementById("ranking");
+      rankDiv.innerHTML = '<strong>🏆 Top 5 Players:</strong><br>' + leaderboard.slice(0, 5).map((entry, i) => `${i + 1}. ${entry.username} ${i < 3 ? '🥇🥈🥉'[i] : ''}`).join("<br>");
+    }
+
+    displayRanking();
+    showQuestion();
+  </script>
+</body>
+</html>

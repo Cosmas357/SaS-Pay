@@ -1,0 +1,242 @@
+
+<!
+
+DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SaS PAY Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f2f2f2;
+    }
+
+    header {
+      background: url('your-background-image.jpg') center/cover no-repeat;
+      color: #fff;
+      text-align: center;
+      padding: 30px 10px;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    .profile {
+      text-align: center;
+      margin: 20px;
+    }
+
+    .profile img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #007acc;
+    }
+
+    .upload-btn {
+      margin-top: 10px;
+      padding: 6px 12px;
+      background-color: #007acc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .dashboard {
+      padding: 20px;
+    }
+
+    .dashboard h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .form-container input, .form-container button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      box-sizing: border-box;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .form-container button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      font-weight: bold;
+    }
+
+    .transactions {
+      margin: 20px auto;
+      max-width: 95%;
+      overflow-x: auto;
+    }
+
+    .transactions table {
+      min-width: 100%;
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .transactions th, .transactions td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+      word-wrap: break-word;
+      white-space: normal;
+      font-size: 0.9rem;
+    }
+
+    .transactions th {
+      background-color: #007acc;
+      color: white;
+    }
+
+    @media screen and (max-width: 600px) {
+      .transactions table,
+      .transactions thead,
+      .transactions tbody,
+      .transactions th,
+      .transactions td,
+      .transactions tr {
+        display: block;
+        width: 100%;
+      }
+
+      .transactions thead {
+        display: none;
+      }
+
+      .transactions tr {
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background: #f9f9f9;
+        padding: 10px;
+      }
+
+      .transactions td {
+        text-align: left;
+        padding-left: 40%;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .transactions td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        font-weight: bold;
+        color: #007acc;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Welcome to SaS PAY</h1>
+  </header>
+
+  <div class="profile">
+    <img id="profilePic" src="https://via.placeholder.com/120" alt="Profile Picture" />
+    <input type="file" id="uploadInput" style="display:none" accept="image/*" />
+    <button class="upload-btn" onclick="document.getElementById('uploadInput').click()">Upload Profile Picture</button>
+  </div>
+
+  <div class="dashboard">
+    <h2>Transaction Record</h2>
+    <div class="form-container">
+      <input type="text" id="product" placeholder="Enter product or service" required />
+      <input type="number" id="amount" placeholder="Enter amount paid (UGX)" required />
+      <input type="text" id="number" placeholder="Enter receiver number (optional)" />
+      <button onclick="recordTransaction()">Record Transaction</button>
+    </div>
+
+    <div class="transactions">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Product</th>
+            <th>Amount Paid</th>
+            <th>Saved</th>
+            <th>Receiver Number</th>
+          </tr>
+        </thead>
+        <tbody id="transactionBody">
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const uploadInput = document.getElementById("uploadInput");
+    const profilePic = document.getElementById("profilePic");
+
+    uploadInput.addEventListener("change", function () {
+      const file = this.files[0];
+      if (file) {
+        profilePic.src = URL.createObjectURL(file);
+      }
+    });
+
+    function recordTransaction() {
+      const product = document.getElementById("product").value.trim();
+      const amount = parseFloat(document.getElementById("amount").value.trim());
+      const number = document.getElementById("number").value.trim() || "N/A";
+
+      if (!product || isNaN(amount) || amount <= 0) {
+        alert("Please enter valid product and amount.");
+        return;
+      }
+
+      const save = amount * 0.1;
+      const tableBody = document.getElementById("transactionBody");
+      const row = document.createElement("tr");
+
+      row.innerHTML = `
+        <td data-label="Date">${new Date().toLocaleDateString()}</td>
+        <td data-label="Product">${product}</td>
+        <td data-label="Amount Paid">UGX ${amount.toLocaleString()}</td>
+        <td data-label="Saved">UGX ${save.toLocaleString()}</td>
+        <td data-label="Receiver Number">${number}</td>
+      `;
+
+      tableBody.appendChild(row);
+
+      // Clear inputs
+      document.getElementById("product").value = "";
+      document.getElementById("amount").value = "";
+      document.getElementById("number").value = "";
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+

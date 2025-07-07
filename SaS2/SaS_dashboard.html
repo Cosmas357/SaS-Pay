@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SaS PAY Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e6f2ff;
+      color: #333;
+      margin: 0;
+    }
+
+    header {
+      background-color: #007acc;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      position: relative;
+    }
+    
+    .logo-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-title img {
+      width: 50px;
+      height: 50px;
+    }
+
+    #clock {
+      font-size: 1rem;
+      font-weight: bold;
+      
+    }
+
+    nav {
+      background-color: #005c99;
+      color: white;
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      padding: 10px 0;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 5px 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    nav a:hover {
+      background-color: #3399ff;
+      border-radius: 5px;
+    }
+
+    #user-profile {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    #user-profile img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid white;
+      cursor: pointer;
+      object-fit: cover;
+    }
+
+    #user-greeting {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    #profile-upload {
+      display: none;
+    }
+
+    header button {
+      margin-top: 10px;
+      padding: 5px 10px;
+      background-color: white;
+      color: #007acc;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 20px auto;
+      padding: 0 1rem;
+    }
+
+    .summary {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      flex: 1;
+      background-color: #fff;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      min-width: 250px;
+      text-align: center;
+    }
+
+    section {
+      background-color: #fff;
+      padding: 1.5rem;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 15px;
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.08);
+    }
+
+    form input, form select {
+      padding: 10px 14px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 0.95rem;
+    }
+
+    form input:focus {
+      outline: none;
+      border-color: #007acc;
+    }
+
+    form button {
+      padding: 10px;
+      background-color: #007acc;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* UPDATED STYLES TO FIX TABLE RESPONSIVENESS */
+    .transactions {
+      overflow-x: auto;  /* Enable horizontal scroll if needed */
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      table-layout: auto;  /* Let columns adjust width naturally */
+      max-width: 100%;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+      word-wrap: break-word; /* allow wrapping inside cells */
+      white-space: normal;   /* override nowrap */
+    }
+
+    th {
+      background-color: #007acc;
+      color: white;
+    }
+
+    .charts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .charts canvas {
+      max-width: 450px;
+      background-color: #fff;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    .progress-container {
+      width: 100%;
+      background-color: #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      height: 25px;
+      margin-top: 10px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background-color: #33cc33;
+      width: 0%;
+      text-align: center;
+      color: white;
+      font-weight: bold;
+      transition: width 0.5s ease;
+    }
+
+    footer {
+      background-color: #003d66;
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-icons i {
+      margin: 0 8px;
+      font-size: 1.2rem;
+    }
+
+    @media screen and (max-width: 600px) {
+      .summary {
+        flex-direction: column;
+      }
+      .charts {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      /* Make table more mobile-friendly by stacking rows vertically */
+      table, thead, tbody, th, td, tr {
+        display: block;
+        width: 100%;
+      }
+
+      thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+
+      tr {
+        margin-bottom: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+      }
+
+      td {
+        border: none;
+        position: relative;
+        padding-left: 50%;
+        text-align: left;
+        white-space: normal;
+      }
+
+      td:before {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: bold;
+        content: attr(data-label);
+        color: #007acc;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <header>
+    <h1>SaS PAY - Save as you Spend</h1>
+    <div id="user-profile">
+      <label for="profile-upload">
+        <img id="profile-pic" src="avatar.png" alt="Profile" title="Click to change profile picture" />
+      </label>
+      <input type="file" id="profile-upload" accept="image/*" />
+      <p id="user-greeting">Hi, 👋</p>
+    </div>
+    <button onclick="logout()">Log out</button>
+  </header>
+   <nav>
+    <a href="SaS_game.html"><i class="fas fa-gamepad"></i> SaS Game</a>
+    <a href="#"><i class="fas fa-bell"></i> Notifications</a>
+    <a href="SaS_chatbot.html"><i class="fas fa-robot"></i> Chatbot</a>
+    <br><br>
+  </nav>
+  <center><div id="clock"></div></center>
+  <main>
+    <!-- summary cards -->
+    <section class="summary">
+      <div class="card">
+        <h2>Total Savings</h2>
+        <p id="total-savings">UGX 0</p>
+      </div>
+      <div class="card">
+        <h2>Total Spent</h2>
+        <p id="total-spent">UGX 0</p>
+      </div>
+    </section>
+
+    <!-- expense form -->
+    <section class="add-expense">
+      <h2><center>Pay & Save Transaction</center></h2>
+      <form id="expense-form">
+        <input type="text" id="product" placeholder="Product Paid For" required />
+        <input type="number" id="amount" placeholder="Amount Paid (UGX)" required />
+        <input type="number" id="save" placeholder="Amount to Save (UGX)" required />
+        <input type="tel" id="number" placeholder="Receiver Phone Number" required pattern="[0-9]{10}" maxlength="10"/>
+        <button type="submit">Add Transaction</button>
+      </form>
+    </section>
+
+    <!-- withdraw -->
+    <section class="withdraw-section">
+      <h2><center>Withdraw Savings</center></h2>
+      <form>
+        <input type="number" placeholder="Amount to Withdraw (UGX)" required />
+        <input type="tel" placeholder="Withdraw to Number" required pattern="[0-9]{10}" maxlength="10"/>
+        <button type="submit">Withdraw</button>
+      </form>
+    </section>
+
+    <!-- goals -->
+    <section class="goals">
+      <h2><center>Your Savings Goal</center></h2>
+      <form id="goal-form">
+        <input type="text" id="goal-name" placeholder="Goal Name (e.g., Buy Laptop)" />
+        <input type="number" id="goal-amount" placeholder="Target Amount (UGX)" />
+        <input type="date" />
+        <button type="submit">Set Goal</button>
+      </form>
+      <div class="progress-container">
+        <div class="progress-bar" id="goal-progress">0%</div>
+      </div>
+    </section>
+
+    <!-- transaction table -->
+    <section class="transactions">
+      <h2><center>Recent Transactions</center></h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Product</th>
+            <th>Amount Paid</th>
+            <th>Saved</th>
+            <th>Receiver Number</th>
+          </tr>
+        </thead>
+        <tbody id="transaction-list"></tbody>
+      </table>
+    </section>
+
+    <!-- charts -->
+    <section class="charts">
+      <canvas id="spendSaveChart"></canvas>
+      <canvas id="pieChart"></canvas>
+    </section>
+
+    <!-- ai section -->
+    <section class="ai-advisor">
+      <h2>AI & ML Savings Advisor</h2>
+      <p id="advisor-tip">Submit your savings goals and transactions to receive smart advice based on your habits.</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <h3>SaS PAY</h3>
+      <p><strong>Goal:</strong> Help Ugandans save as they spend.</p>
+      <p><strong>Motto:</strong> “Save as you spend”</p>
+      <div class="footer-icons">
+        <i class="fab fa-facebook"></i>
+        <i class="fab fa-twitter"></i>
+        <i class="fab fa-instagram"></i>
+      </div>
+      <p>&copy; 2025 All rights reserved by SaS PAY</p>
+    </div>
+  </footer>
+
+  <script>
+       // Auto clock updater
+    function updateClock() {
+      const now = new Date();
+      const time = now.toLocaleTimeString();
+      document.getElementById("clock").textContent = time;
+    }
+    setInterval(updateClock, 1000);
+    updateClock(); // Call on load
+    let totalSavings = 0;
+    let totalSpent = 0;
+    let goalAmount = 0;
+
+    const userGreeting = document.getElementById("user-greeting");
+    const user = JSON.parse(localStorage.getItem("sasUser")) || { username: "User" };
+    userGreeting.textContent = `Hi, ${user.username} 👋`;
+
+    const profilePic = document.getElementById("profile-pic");
+    const profileUpload = document.getElementById("profile-upload");
+
+    const savedImage = localStorage.getItem("sasProfilePic");
+    if (savedImage) {
+      profilePic.src = savedImage;
+    }
+
+    profileUpload.addEventListener("change", function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          profilePic.src = e.target.result;
+          localStorage.setItem("sasProfilePic", e.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    const form = document.getElementById("expense-form");
+    const productInput = document.getElementById("product");
+    const amountInput = document.getElementById("amount");
+    const saveInput = document.getElementById("save");
+    const numberInput = document.getElementById("number");
+    const savingsDisplay = document.getElementById("total-savings");
+    const spentDisplay = document.getElementById("total-spent");
+    const transactionList = document.getElementById("transaction-list");
+    const advisorTip = document.getElementById("advisor-tip");
+    const progressBar = document.getElementById("goal-progress");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const product = productInput.value.trim();
+      const amount = parseFloat(amountInput.value);
+      const save = parseFloat(saveInput.value);
+      const number = numberInput.value.trim();
+
+      if (!product || amount <= 0 || save < 0 || number.length !== 10) return;
+
+      totalSpent += amount;
+      totalSavings += save;
+
+      savingsDisplay.textContent = `UGX ${totalSavings.toLocaleString()}`;
+      spentDisplay.textContent = `UGX ${totalSpent.toLocaleString()}`;
+
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td data-label="Date">${new Date().toLocaleDateString()}</td>
+        <td data-label="Product">${product}</td>
+        <td data-label="Amount Paid">UGX ${amount.toLocaleString()}</td>
+        <td data-label="Saved">UGX ${save.toLocaleString()}</td>
+        <td data-label="Receiver Number">${number}</td>
+      `;
+      transactionList.prepend(row);
+
+      advisorTip.textContent = (save / amount) > 0.25 ?
+        "Excellent saving habit! You're doing great." :
+        "Try to increase your saving portion to reach your goal faster.";
+
+      updateProgressBar();
+      updateCharts();
+      form.reset();
+    });
+
+    document.getElementById("goal-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      goalAmount = parseFloat(document.getElementById("goal-amount").value);
+      updateProgressBar();
+    });
+
+    function updateProgressBar() {
+      if (goalAmount > 0) {
+        const progress = Math.min((totalSavings / goalAmount) * 100, 100);
+        progressBar.style.width = `${progress}%`;
+        progressBar.textContent = `${Math.round(progress)}%`;
+      }
+    }
+
+    const spendSaveChart = new Chart(document.getElementById('spendSaveChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Spent', 'Saved'],
+        datasets: [{
+          label: 'UGX Value',
+          data: [0, 0],
+          backgroundColor: ['#ff4d4d', '#33cc33']
+        }]
+      }
+    });
+
+    const pieChart = new Chart(document.getElementById('pieChart'), {
+      type: 'pie',
+      data: {
+        labels: ['Spent', 'Saved'],
+        datasets: [{
+          data: [0, 0],
+          backgroundColor: ['#ff4d4d', '#33cc33']
+        }]
+      }
+    });
+
+    function updateCharts() {
+      spendSaveChart.data.datasets[0].data = [totalSpent, totalSavings];
+      pieChart.data.datasets[0].data = [totalSpent, totalSavings];
+      spendSaveChart.update();
+      pieChart.update();
+    }
+
+    function logout() {
+      alert("Logging out...");
+      window.location.href = "SaS_Main_Page.html";
+    }
+  </script>
+</body>
+</html>

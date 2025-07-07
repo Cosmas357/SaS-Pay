@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SaS - Login or Sign Up</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f8ff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+
+    .header-message {
+      color: #007acc;
+      padding: 1rem;
+      text-align: center;
+      width: 100%;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .input-group {
+      margin-bottom: 1rem;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #007acc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      background-color: #005c99;
+    }
+
+    .toggle {
+      text-align: center;
+      margin-top: 1rem;
+      cursor: pointer;
+      color: #007acc;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="header-message">Welcome to SaS PAY - Save As You Spend</div>
+
+  <div class="container">
+    <h2 id="form-title">Login</h2>
+
+    <!-- Login Form -->
+    <form id="login-form" onsubmit="login(event)">
+      <div class="input-group">
+        <label for="login-phone">Phone Number</label>
+        <input type="tel" pattern="\d{10}" id="login-phone" maxlength="10" title="Phone number must be exactly 10 digits" required />
+      </div>
+      <div class="input-group">
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" required />
+      </div>
+      <div class="input-group">
+        <label for="login-confirm-password">Confirm Password</label>
+        <input type="password" id="login-confirm-password" required />
+      </div>
+      <button type="submit">Login</button>
+      <div class="toggle" onclick="toggleForm()">Don't have an account? Sign Up</div>
+    </form>
+
+    <!-- Signup Form -->
+    <form id="signup-form" class="hidden" onsubmit="signup(event)">
+      <div class="input-group">
+        <label for="signup-phone">Phone Number</label>
+        <input type="tel" pattern="\d{10}" id="signup-phone" maxlength="10" title="Phone number must be exactly 10 digits" required />
+      </div>
+      <div class="input-group">
+        <label for="signup-password">Password</label>
+        <input type="password" id="signup-password" required />
+      </div>
+      <div class="input-group">
+        <label for="signup-confirm-password">Confirm Password</label>
+        <input type="password" id="signup-confirm-password" required />
+      </div>
+      <div class="input-group">
+        <label for="signup-username">User Name</label>
+        <input type="text" id="signup-username" required />
+      </div>
+      <div class="input-group">
+        <label for="signup-code">Verification Code</label>
+        <input type="text" id="signup-code" placeholder="Enter code sent to phone" required />
+      </div>
+      <button type="submit">Sign Up</button>
+      <div class="toggle" onclick="toggleForm()">Already have an account? Login</div>
+    </form>
+  </div>
+
+  <script>
+    let verificationCode = "1234";
+
+    function toggleForm() {
+      document.getElementById("login-form").classList.toggle("hidden");
+      document.getElementById("signup-form").classList.toggle("hidden");
+      document.getElementById("form-title").innerText =
+        document.getElementById("login-form").classList.contains("hidden") ? "Sign Up" : "Login";
+
+      if (!document.getElementById("login-form").classList.contains("hidden")) {
+        verificationCode = "1234";
+      } else {
+        alert("Your verification code is: " + verificationCode);
+      }
+    }
+
+    function isValidPhone(phone) {
+      return /^\d{10}$/.test(phone);
+    }
+
+    function isStrongPassword(password) {
+      return password.length > 5 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password);
+    }
+
+    async function signup(event) {
+      event.preventDefault();
+      const phone = document.getElementById("signup-phone").value.trim();
+      const password = document.getElementById("signup-password").value;
+      const confirmPassword = document.getElementById("signup-confirm-password").value;
+      const username = document.getElementById("signup-username").value.trim();
+      const code = document.getElementById("signup-code").value.trim();
+
+      if (!phone || !password || !confirmPassword || !username || !code) {
+        alert("Please fill all fields");
+        return;
+      }
+
+      if (!isValidPhone(phone)) {
+        alert("Phone number must be exactly 10 digits.");
+        return;
+      }
+
+      if (!isStrongPassword(password)) {
+        alert("Password must be more than 5 characters and include uppercase, lowercase, and a digit.");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+      }
+
+      if (code !== verificationCode) {
+        alert("Incorrect verification code.");
+        return;
+      }
+
+      try {
+        const response = await fetch('/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ phone, password, username })
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'exists') {
+          alert("Account already exists. Please log in.");
+        } else if (data.status === 'success') {
+          alert("Account created successfully. You can now login.");
+          toggleForm();
+        } else {
+          alert("Signup failed: " + data.message);
+        }
+      } catch (error) {
+        console.error("Error during signup:", error);
+        alert("An error occurred during signup. Please try again.");
+      }
+    }
+
+    async function login(event) {
+      event.preventDefault();
+      const phone = document.getElementById("login-phone").value.trim();
+      const password = document.getElementById("login-password").value;
+      const confirmPassword = document.getElementById("login-confirm-password").value;
+
+      if (!isValidPhone(phone)) {
+        alert("Phone number must be exactly 10 digits.");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+      }
+
+      try {
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ phone, password })
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'success') {
+          alert("Login successful!");
+          localStorage.setItem("sasActiveUser", data.username);
+          window.location.href = "/"; // ✅ Go to dashboard
+        } else {
+          alert("Login failed: " + data.message);
+        }
+      } catch (error) {
+        console.error("Error during login:", error);
+        alert("An error occurred during login. Please try again.");
+      }
+    }
+  </script>
+</body>
+</html>

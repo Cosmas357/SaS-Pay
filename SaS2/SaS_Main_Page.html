@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SaS - Save as you Spent</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #e6f2ff;
+      color: #333;
+    }
+
+    header {
+      position: relative;
+      background: linear-gradient(to right, #003366, #0066cc);
+      color: white;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .logo {
+      width: 80px;
+      height: auto;
+      display: block;
+      margin: 0 auto 1rem;
+      border-radius: 50%;
+    }
+
+    nav {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #aad8ff;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: linear-gradient(to bottom, #cce6ff, #e6f2ff);
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .slider {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      margin: 2rem auto;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      height: 25rem;
+      background: #000;
+    }
+
+    .slides {
+      display: flex;
+      transition: transform 6s ease-in-out; /* slowed down transition */
+      width: 500%;
+      height: 100%;
+    }
+
+    .slide {
+      min-width: 100%;
+      height: 100%;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      background-color: #000;
+    }
+
+    .features, .how-it-works {
+      padding: 2rem;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .features h2, .how-it-works h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #003366;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .feature {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .cta {
+      text-align: center;
+      background-color: #007acc;
+      color: white;
+      padding: 3rem 2rem;
+    }
+
+    .cta a {
+      background: white;
+      color: #007acc;
+      padding: 0.8rem 1.5rem;
+      border-radius: 6px;
+      font-size: 1rem;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 1rem;
+      transition: background 0.3s;
+    }
+
+    .cta a:hover {
+      background: #d8ecff;
+    }
+
+    .motivation-block {
+      background: linear-gradient(135deg, #007acc, #00c3ff);
+      padding: 2rem;
+      text-align: center;
+      color: red;
+      font-size: 1.5rem;
+      font-weight: bold;
+      border-top: 5px solid #005f99;
+      border-bottom: 5px solid #005f99;
+      margin-top: 3rem;
+      position: relative;
+    }
+
+    .motivation-block .quote {
+      animation: fade 1s ease-in-out;
+      transition: opacity 1s ease-in-out;
+      max-width: 80%;
+      margin: auto;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    footer {
+      background-color: #003366;
+      color: white;
+      text-align: left;
+      padding: 3rem 2rem;
+      font-size: 0.95rem;
+      margin-top: 0;
+    }
+
+    footer .footer-content {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    footer .footer-section {
+      flex: 1 1 280px;
+      min-width: 260px;
+    }
+
+    footer h3 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1rem;
+      font-weight: 600;
+      color: #aad8ff;
+      font-size: 1.3rem;
+    }
+
+    footer p, footer ul {
+      margin: 0.3rem 0;
+      line-height: 1.6;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    footer ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    footer ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    footer ul.social-icons {
+      display: flex;
+      gap: 20px;
+      padding: 0;
+      margin-top: 0.5rem;
+    }
+
+    footer ul.social-icons li a {
+      color: white;
+      font-size: 1.8rem;
+      transition: color 0.3s;
+    }
+
+    footer ul.social-icons li a:hover {
+      color: #aad8ff;
+    }
+
+    footer .rights {
+      margin-top: 2rem;
+      font-style: italic;
+      font-size: 0.9rem;
+      text-align: center;
+      color: #99bfe6;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        gap: 15px;
+      }
+
+      footer .footer-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      footer .footer-section, footer .rights {
+        min-width: 100%;
+      }
+
+      footer ul.social-icons {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <img src="./SaS_images/1747563485546.png" alt="SaS Logo" class="logo" />
+    <h2>SaS - Save as You Spend</h2>
+    <nav>
+      <a href="#"><i class="fas fa-home"></i> Home</a>
+      <a href="#"><i class="fas fa-star"></i> Features</a>
+      <a href="SaS_getStarted.html"><i class="fas fa-play-circle"></i> Get Started</a>
+      <a href="#"><i class="fas fa-envelope"></i> Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Smart Savings Every Time You Spend</h1>
+    <p>Track your purchases and automatically set money aside. Cash or digital, SaS helps you save with every transaction.</p>
+  </section>
+
+  <section class="slider">
+    <div class="slides" id="slides">
+      <div class="slide"><img src="./SaS_images/1747563485546.png" alt="Slide 1"></div>
+      <div class="slide"><img src="./SaS_images/images.png" alt="Slide 2"></div>
+      <div class="slide"><img src="./SaS_images/images (1).png" alt="Slide 3"></div>
+      <div class="slide"><img src="./SaS_images/images (2).jpeg" alt="Slide 4"></div>
+      <div class="slide"><img src="./SaS_images/images.jpeg" alt="Slide 5"></div>
+    </div>
+  </section>
+
+  <section class="features">
+    <h2>Features</h2>
+    <div class="feature-grid">
+      <div class="feature"><h3>Auto-Save Logic</h3><p>Automatically saves a percentage of every amount you spend—customizable to fit your budget.</p></div>
+      <div class="feature"><h3>Offline Recording</h3><p>Supports offline entry for cash transactions and syncs when you're back online.</p></div>
+      <div class="feature"><h3>Progress Tracking</h3><p>Visualize how much you've saved each week and month with real-time stats.</p></div>
+    </div>
+  </section>
+
+  <section class="how-it-works">
+    <h2>How It Works</h2>
+    <ol>
+      <li><strong>Record Your Spending:</strong> Enter each transaction—cash or digital.</li>
+      <li><strong>Auto-Save:</strong> The app calculates and saves a small portion instantly.</li>
+      <li><strong>Monitor Growth:</strong> Track your savings journey and set goals.</li>
+    </ol>
+  </section>
+
+  <section class="cta">
+    <h2>Start Saving Smarter</h2>
+    <p>Join thousands already building better financial habits with SaS.</p>
+    <a href="SaS_getStarted.html">Get Started</a>
+  </section>
+
+  <section class="motivation-block">
+    <div class="quote" id="quoteDisplay">Smart Savings, SaS is here for you.</div>
+  </section>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3><i class="fas fa-wallet"></i> SaS PAY</h3>
+        <p><i class="fas fa-bullseye"></i> Goals: Empower users to save effortlessly every time they spend.</p>
+        <p><i class="fas fa-tasks"></i> Objectives: Provide an offline/online app with customizable saving rules and clear visual stats.</p>
+        <p><i class="fas fa-lightbulb"></i> Motto: "Save Smart, Live Better."</p>
+      </div>
+      <div class="footer-section">
+        <h3><i class="fas fa-hands-helping"></i> Connect with Us</h3>
+        <ul class="social-icons">
+          <li><a href="#"><i class="fab fa-facebook-square"></i></a></li>
+          <li><a href="#"><i class="fab fa-twitter-square"></i></a></li>
+          <li><a href="#"><i class="fab fa-instagram-square"></i></a></li>
+          <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+          <li><a href="#"><i class="fab fa-youtube-square"></i></a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="rights"><i class="fas fa-copyright"></i> 2025 All rights reserved by SaS PAY.</p>
+  </footer>
+
+  <script>
+    // Slider logic
+    let slideIndex = 0;
+    const slides = document.getElementById("slides");
+    const totalSlides = slides.children.length;
+
+    function showNextSlide() {
+      slideIndex = (slideIndex + 1) % totalSlides;
+      slides.style.transform = `translateX(-${slideIndex * 100}%)`;
+    }
+
+    setInterval(showNextSlide, 15000); // slowed down to 10 seconds
+
+    // Motivational quotes logic
+    const quotes = [
+      "Smart Savings, SaS is here for you.",
+      "Save as You Spend – The Future is SaS.",
+      "Turn Every Coin into a Step Towards Freedom.",
+      "Your Goals, Our Mission – SaS it!",
+      "Why wait to save? Let SaS work while you spend.",
+      "Small savings. Big changes. Start with SaS.",
+      "Your Money, Your Control – Start Smart with SaS.",
+      "From cash to digital – SaS has your back.",
+      "Saving made simple with SaS PAY."
+    ];
+
+    let quoteIndex = 0;
+    const quoteDisplay = document.getElementById("quoteDisplay");
+
+    setInterval(() => {
+      quoteIndex = (quoteIndex + 1) % quotes.length;
+      quoteDisplay.style.opacity = 0;
+      setTimeout(() => {
+        quoteDisplay.textContent = quotes[quoteIndex];
+        quoteDisplay.style.opacity = 1;
+      }, 500);
+    }, 4000);
+  </script>
+</body>
+</html>
+
+
+
+
+
