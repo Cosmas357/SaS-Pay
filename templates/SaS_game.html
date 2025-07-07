@@ -1,0 +1,341 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SaS PAY Finance Game</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #e0f7ff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #007acc;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+      .logo {
+      width: 80px;
+      height: auto;
+      display: block;
+      margin: 0 auto 1rem;
+      border-radius: 50%;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .game-box {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      padding: 30px;
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+      position: relative;
+    }
+
+    .question {
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+    }
+
+    .options button {
+      display: block;
+      margin: 10px auto;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #007acc;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .options button:hover {
+      background-color: #005b99;
+    }
+
+    .level-display, .ranking-display {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #007acc;
+    }
+
+    .ranking-display {
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+
+    .timer {
+      font-size: 1.2rem;
+      color: #e91e63;
+      position: absolute;
+      top: 10px;
+      right: 20px;
+    }
+
+    footer {
+      background-color: #003366;
+      color: white;
+      text-align: left;
+      padding: 3rem 2rem;
+      font-size: 0.95rem;
+      margin-top: 0;
+    }
+
+    footer .footer-content {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    footer .footer-section {
+      flex: 1 1 280px;
+      min-width: 260px;
+    }
+
+    footer h3 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1rem;
+      font-weight: 600;
+      color: #aad8ff;
+      font-size: 1.3rem;
+    }
+
+    footer p, footer ul {
+      margin: 0.3rem 0;
+      line-height: 1.6;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    footer ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    footer ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    footer ul.social-icons {
+      display: flex;
+      gap: 20px;
+      padding: 0;
+      margin-top: 0.5rem;
+    }
+
+    footer ul.social-icons li a {
+      color: white;
+      font-size: 1.8rem;
+      transition: color 0.3s;
+    }
+
+    footer ul.social-icons li a:hover {
+      color: #aad8ff;
+    }
+
+    footer .rights {
+      margin-top: 2rem;
+      font-style: italic;
+      font-size: 0.9rem;
+      text-align: center;
+      color: #99bfe6;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        gap: 15px;
+      }
+
+      footer .footer-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      footer .footer-section, footer .rights {
+        min-width: 100%;
+      }
+
+      footer ul.social-icons {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+      <center> <img src="./SaS_images/1747563485546.png" alt="SaS Logo" class="logo" /></center>
+    SaS PAY Finance Game – Learn to Save, Earn, and Grow!
+  </header>
+<!---game logic section--->
+  <main>
+    <div class="game-box">
+      <div id="timer" class="timer"></div>
+      <div id="question" class="question">Loading question...</div>
+      <div class="options" id="options"></div>
+      <div class="level-display" id="level">Level: 1</div>
+      <div class="ranking-display" id="ranking"></div>
+    </div>
+  </main>
+<!---footer section--->
+   <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3><i class="fas fa-wallet"></i> SaS PAY</h3>
+        <p><i class="fas fa-bullseye"></i> Goals: Empower users to save effortlessly every time they spend.</p>
+        <p><i class="fas fa-tasks"></i> Objectives: Provide an offline/online app with customizable saving rules and clear visual stats.</p>
+        <p><i class="fas fa-lightbulb"></i> Motto: "Save Smart, Live Better."</p>
+      </div>
+      <div class="footer-section">
+        <h3><i class="fas fa-hands-helping"></i> Connect with Us</h3>
+        <ul class="social-icons">
+          <li><a href="#"><i class="fab fa-facebook-square"></i></a></li>
+          <li><a href="#"><i class="fab fa-twitter-square"></i></a></li>
+          <li><a href="#"><i class="fab fa-instagram-square"></i></a></li>
+          <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+          <li><a href="#"><i class="fab fa-youtube-square"></i></a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="rights"><i class="fas fa-copyright"></i> 2025 All rights reserved by SaS PAY.</p>
+  </footer>
+
+  <script>
+    //game questions
+    const sampleQuestions = [
+      "What is a budget used for?",
+      "Why is saving important?",
+      "What does investing help you do?",
+      "How can you avoid impulse spending?",
+      "What is a good reason to use a loan?",
+      "How does a savings account help?",
+      "Why track your expenses?",
+      "What is compound interest?",
+      "What are emergency funds for?",
+      "What is the 50/30/20 rule?",
+    
+    ];
+    //game possible answers
+    const sampleAnswers = [
+      ["To track income and expenses", 0],
+      ["To build future security", 0],
+      ["Grow your wealth", 0],
+      ["Make a list and plan ahead", 0],
+      ["For emergencies or big needs", 0],
+      ["To keep money safe and earn interest", 0],
+      ["To know where money goes", 0],
+      ["Interest earned on previous interest", 0],
+      ["To cover unexpected expenses", 0],
+      ["Spending 50% needs, 30% wants, 20% savings", 0]
+   
+    ];
+
+    let allQuestions = sampleQuestions.map((q, i) => ({
+      question: q,
+      options: [sampleAnswers[i][0], "Ignore it", "Spend randomly"],
+      answer: 0,
+      level: i + 1
+    }));
+
+    const shuffledQuestions = allQuestions.sort(() => Math.random() - 0.5);
+    let usedIndices = new Set();
+    let username = prompt("Enter your username:");
+    let currentIndex = 0;
+    let timerInterval;
+    const leaderboard = JSON.parse(localStorage.getItem("leaderboard") || "[]");
+
+    function showQuestion() {
+      if (currentIndex >= shuffledQuestions.length) {
+        finishGame();
+        return;
+      }
+      const q = shuffledQuestions[currentIndex];
+      clearInterval(timerInterval);
+      document.getElementById("question").textContent = q.question;
+      document.getElementById("options").innerHTML = "";
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(i);
+        document.getElementById("options").appendChild(btn);
+      });
+      document.getElementById("level").textContent = `Level: ${q.level}`;
+      startTimer();
+    }
+
+    function startTimer() {
+      let timeLeft = 59;
+      const timerDisplay = document.getElementById("timer");
+      timerDisplay.textContent = `⏰ ${timeLeft}s`;
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = `⏰ ${timeLeft}s`;
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          skipQuestion();
+        }
+      }, 1000);
+    }
+
+    function skipQuestion() {
+      alert("⏳ Time's up! Moving to the next question.");
+      currentIndex++;
+      showQuestion();
+    }
+
+    function checkAnswer(choice) {
+      const correct = shuffledQuestions[currentIndex].answer;
+      clearInterval(timerInterval);
+      if (choice === correct) {
+        currentIndex++;
+        showQuestion();
+      } else {
+        alert("❌ Try again! Choose the best answer.");
+        showQuestion();
+      }
+    }
+
+    function finishGame() {
+      leaderboard.push({ username, score: shuffledQuestions.length });
+      leaderboard.sort((a, b) => b.score - a.score);
+      localStorage.setItem("leaderboard", JSON.stringify(leaderboard.slice(0, 10)));
+      displayRanking();
+      alert("🎉 You completed all questions! Great job saving!");
+    }
+
+    function displayRanking() {
+      const rankDiv = document.getElementById("ranking");
+      rankDiv.innerHTML = '<strong>🏆 Top 5 Players:</strong><br>' + leaderboard.slice(0, 5).map((entry, i) => `${i + 1}. ${entry.username} ${i < 3 ? '🥇🥈🥉'[i] : ''}`).join("<br>");
+    }
+
+    displayRanking();
+    showQuestion();
+  </script>
+</body>
+</html>

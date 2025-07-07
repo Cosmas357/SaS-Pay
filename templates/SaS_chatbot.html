@@ -1,0 +1,311 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SaS PAY Chatbot</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      background-color: #e0f7ff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: #007acc;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .logo {
+      width: 80px;
+      height: auto;
+      display: block;
+      margin: 0 auto 1rem;
+      border-radius: 50%;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .chatbot-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 40px 0;
+    }
+
+    .chatbot-title {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #007acc;
+      margin-bottom: 10px;
+    }
+
+    .click-hint {
+      font-size: 1rem;
+      color: #007acc;
+      margin-bottom: 10px;
+      animation: drizzle 2s infinite;
+    }
+
+    @keyframes drizzle {
+      0% { opacity: 0.3; transform: translateY(-3px); }
+      50% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0.3; transform: translateY(-3px); }
+    }
+
+    .chatbot-toggle-btn {
+      font-size: 3rem;
+      color: #007acc;
+      cursor: pointer;
+      background-color: white;
+      border-radius: 50%;
+      padding: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
+    }
+
+    .chatbot-toggle-btn.animate {
+      animation: pulse 2s infinite;
+    }
+
+    #chatbot-container {
+      width: 400px;
+      height: 600px;
+      background: white;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      border-radius: 15px;
+      overflow: hidden;
+      animation: slideUp 0.5s ease-out;
+    }
+
+    #chatbot-container.hidden {
+      display: none;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    footer {
+      background-color: #003366;
+      color: white;
+      text-align: left;
+      padding: 3rem 2rem;
+      font-size: 0.95rem;
+      margin-top: 0;
+    }
+
+    footer .footer-content {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    footer .footer-section {
+      flex: 1 1 280px;
+      min-width: 260px;
+    }
+
+    footer h3 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1rem;
+      font-weight: 600;
+      color: #aad8ff;
+      font-size: 1.3rem;
+    }
+
+    footer p, footer ul {
+      margin: 0.3rem 0;
+      line-height: 1.6;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    footer ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    footer ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    footer ul.social-icons {
+      display: flex;
+      gap: 20px;
+      padding: 0;
+      margin-top: 0.5rem;
+    }
+
+    footer ul.social-icons li a {
+      color: white;
+      font-size: 1.8rem;
+      transition: color 0.3s;
+    }
+
+    footer ul.social-icons li a:hover {
+      color: #aad8ff;
+    }
+
+    footer .rights {
+      margin-top: 2rem;
+      font-style: italic;
+      font-size: 0.9rem;
+      text-align: center;
+      color: #99bfe6;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        gap: 15px;
+      }
+
+      footer .footer-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      footer .footer-section, footer .rights {
+        min-width: 100%;
+      }
+
+      footer ul.social-icons {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <center> <img src="./SaS_images/1747563485546.png" alt="SaS Logo" class="logo" /></center>
+  Welcome to SaS PAY – Smart Savings Every Time You Spend
+</header>
+<!---chatbot section--->
+<main>
+  <div class="chatbot-box">
+    <div class="chatbot-title">Let's Chat – Your Personal Savings Assistant</div>
+    <div class="click-hint" id="click-hint">Click me</div>
+    <div class="chatbot-toggle-btn animate" id="chatbot-icon" onclick="toggleChatbot()">
+      <i class="fas fa-comment-dots"></i>
+    </div>
+  </div>
+  <div id="chatbot-container" class="hidden">
+    <div style="background-color: #007acc; color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
+      <span><i class="fas fa-robot"></i> SaS Chatbot Assistant</span>
+      <div>
+        <button id="theme-toggle" title="Toggle Theme" style="background:none;border:none;color:white;cursor:pointer;margin-right:10px;"><i class="fas fa-adjust"></i></button>
+        <button id="close-chat" style="background:none;border:none;color:white;cursor:pointer;"><i class="fas fa-times"></i></button>
+      </div>
+    </div>
+    <div id="chat-messages" style="height: 400px; overflow-y: auto; padding: 15px; font-size: 1rem;">
+      <div><strong>SaS Bot:</strong> 👋 Welcome to SaS PAY, your financial friend! I'm here to help you save smartly as you spend. Ask me anything!</div>
+    </div>
+    <div style="padding: 15px; display: flex; align-items: center;">
+      <button id="voice-btn" title="Voice Input" style="background-color:#007acc;color:white;border:none;padding:10px;border-radius:50%;margin-right:8px;"><i class="fas fa-microphone"></i></button>
+      <input type="text" id="chat-input" placeholder="Type your question..." style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+      <button id="send-btn" style="background-color: #007acc; color: white; border: none; padding: 10px 12px; margin-left: 5px; border-radius: 5px;"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+</main>
+<!---footer section--->
+<footer>
+  <div class="footer-content">
+    <div class="footer-section">
+      <h3><i class="fas fa-wallet"></i> SaS PAY</h3>
+      <p><i class="fas fa-bullseye"></i> Goals: Empower users to save effortlessly every time they spend.</p>
+      <p><i class="fas fa-tasks"></i> Objectives: Provide an offline/online app with customizable saving rules and clear visual stats.</p>
+      <p><i class="fas fa-lightbulb"></i> Motto: "Save Smart, Live Better."</p>
+    </div>
+    <div class="footer-section">
+      <h3><i class="fas fa-hands-helping"></i> Connect with Us</h3>
+      <ul class="social-icons">
+        <li><a href="#"><i class="fab fa-facebook-square"></i></a></li>
+        <li><a href="#"><i class="fab fa-twitter-square"></i></a></li>
+        <li><a href="#"><i class="fab fa-instagram-square"></i></a></li>
+        <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+        <li><a href="#"><i class="fab fa-youtube-square"></i></a></li>
+      </ul>
+    </div>
+  </div>
+  <p class="rights"><i class="fas fa-copyright"></i> 2025 All rights reserved by SaS PAY.</p>
+</footer>
+
+<script>
+function toggleChatbot() {
+  const container = document.getElementById('chatbot-container');
+  const icon = document.getElementById('chatbot-icon');
+  const hint = document.getElementById('click-hint');
+
+  if (container.classList.contains('hidden')) {
+    container.classList.remove('hidden');
+    button.style.animation = 'pulse 2s infinite';
+  } else {
+    hint.style.display = 'none';
+    button.style.animation = 'none';
+  }
+}
+//closure of the chatbot
+document.getElementById("close-chat").addEventListener("click", () => {
+  document.getElementById("chatbot-container").classList.add("hidden");
+  document.getElementById('click-hint').style.display = 'block';
+  document.getElementById('chatbot-btn').style.animation = 'pulse 2s infinite';
+});
+//message sending icon
+document.getElementById("send-btn").addEventListener("click", () => {
+  const input = document.getElementById("chat-input");
+  const messages = document.getElementById("chat-messages");
+  if (input.value.trim() !== "") {
+    messages.innerHTML += `<div><strong>You:</strong> ${input.value}</div>`;
+    input.value = "";
+    messages.scrollTop = messages.scrollHeight;
+  }
+});
+//speech and voice recognition
+document.getElementById("voice-btn").addEventListener("click", () => {
+  if (!('webkitSpeechRecognition' in window)) {
+    alert("Your browser does not support speech recognition.");
+  } else {
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.onresult = function(event) {
+      const transcript = event.results[0][0].transcript;
+      document.getElementById("chat-input").value = transcript;
+    };
+    recognition.start();
+  }
+});
+</script>
+
+</body>
+</html>

@@ -101,6 +101,14 @@ def dashboard():
     username = session.get('username', 'user')
     return render_template('dashboard.html', username=username)
 
+@app.route('/chatbot')
+def chatbot():
+    return render_template('SaS_chatbot.html')
+
+@app.route('/game')
+def game():
+    return render_template('SaS_game.html')
+
 
 @app.route('/add_transaction', methods=['POST'])
 def handle_add_transaction():
