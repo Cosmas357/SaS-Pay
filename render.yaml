@@ -4,6 +4,6 @@ services:
     env: python
     plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn sas:app 
+    startCommand: gunicorn app:app 
 
     # sqlite will just create the sas.db file locally inside the app container
