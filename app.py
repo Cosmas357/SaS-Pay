@@ -3,12 +3,14 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask import session
 
 app = Flask(__name__)
 
 # Configuring the SQLite database, stored in a file called 'sas.db' in your project folder
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sas.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # to disable a warning
+app.secret_key = 'your_secret_key_here'  # Replace with a secure key in production
 
 db = SQLAlchemy(app)
 
@@ -84,6 +86,7 @@ def login():
 
 
     if user and user.check_password(password):
+        session['username'] = user.username  # ✅ Store in session
         return jsonify({'status': 'success', 'username': user.username})
     else:
         return jsonify({'status': 'fail', 'message': 'Invalid credentials'}), 
@@ -93,9 +96,11 @@ def login():
 def get_started():
     return render_template('get_started.html')
 
-@app.route('/dashboard')
+@app.route('/')
 def dashboard():
-    return render_template('dashboard.html')
+    username = session.get('username', 'user')
+    return render_template('dashboard.html', username=username)
+
 
 @app.route('/add_transaction', methods=['POST'])
 def handle_add_transaction():
